@@ -3,135 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JJWine - Real Earning Game</title>
-    <script src="https://tailwindcss.com"></script>
+    <title>JJWine - Real Earning Game with Admin Panel</title>
+    <script src="https://jsdelivr.net"></script>
     <style>
-        body { background: linear-gradient(135deg, #0f172a, #1e1b4b); color: white; font-family: sans-serif; }
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            color: white;
+            font-family: sans-serif;
+        }
         .hidden { display: none; }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen items-center justify-center p-4">
 
-    <!-- 1. AUTH SCREEN (LOGIN / REGISTER) -->
-    <div id="auth-screen" class="flex flex-col items-center justify-center min-h-screen px-4">
-        <div class="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-sm border border-slate-700">
-            <h1 class="text-3xl font-extrabold text-center text-yellow-400 mb-6 tracking-wide">JJ WINE</h1>
-            
-            <div id="auth-tabs" class="flex justify-around mb-6 border-b border-slate-700 pb-2">
-                <button onclick="switchAuthTab('login')" id="login-tab-btn" class="text-yellow-400 font-bold border-b-2 border-yellow-400 pb-1">لاگ ان</button>
-                <button onclick="switchAuthTab('register')" id="register-tab-btn" class="text-slate-400 font-bold pb-1">اکاؤنٹ بنائیں</button>
-            </div>
-
-            <!-- Inputs -->
-            <div class="space-y-4">
-                <input type="text" id="auth-username" placeholder="صارف کا نام (Username)" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-yellow-400 text-right">
-                <input type="password" id="auth-password" placeholder="پاس ورڈ (Password)" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-yellow-400 text-right">
-                
-                <button onclick="handleAuth()" id="auth-submit-btn" class="w-full bg-yellow-500 hover:bg-yellow-600 text-slate-950 font-extrabold p-3 rounded-lg transition duration-200">داخل ہوں</button>
-            </div>
-            <p id="auth-error" class="text-red-500 text-sm text-center mt-3 hidden"></p>
+    <!-- 1. AUTH SCREEN -->
+    <div id="auth-screen" class="w-full max-w-md bg-slate-900/80 p-6 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-md">
+        <h1 class="text-3xl font-black text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 tracking-wider">JJWINE GAME</h1>
+        <p class="text-slate-400 text-center text-sm mb-6">The Best Game & Real Platform</p>
+        
+        <div class="flex bg-slate-800 p-1 rounded-xl mb-6">
+            <button id="tab-login" class="flex-1 py-2.5 rounded-lg text-sm font-bold bg-amber-500 text-slate-950 transition-all">Login</button>
+            <button id="tab-register" class="flex-1 py-2.5 rounded-lg text-sm font-bold text-slate-400 transition-all">Register</button>
         </div>
+
+        <form id="auth-form" class="space-y-4">
+            <div id="username-container" class="hidden">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Full Name</label>
+                <input type="text" id="auth-username" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition-all" placeholder="Enter your name">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Mobile Number</label>
+                <input type="tel" id="auth-phone" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition-all" placeholder="03XXXXXXXXX">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Password</label>
+                <input type="password" id="auth-password" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition-all" placeholder="••••••••">
+            </div>
+            <button type="submit" id="auth-btn" class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 font-black py-4 rounded-xl shadow-lg transition-all text-base tracking-wide mt-2">LOGIN TO ACCOUNT</button>
+        </form>
     </div>
 
-    <!-- 2. MAIN GAME LOBBY -->
-    <div id="lobby-screen" class="hidden min-h-screen flex flex-col">
-        <!-- Header / Wallet -->
-        <header class="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-800 shadow-md">
-            <div class="flex items-center space-x-3">
-                <span class="text-sm bg-slate-800 px-3 py-1 rounded-full text-slate-300">صارف: <b id="user-display" class="text-white">---</b></span>
-                <button onclick="logout()" class="text-xs text-red-400 hover:underline">لاگ آؤٹ</button>
-                <button id="admin-btn" onclick="openAdminPanel()" class="hidden text-xs text-yellow-400 bg-yellow-950/50 px-2 py-0.5 rounded border border-yellow-700">ایڈمن پینل ⚙️</button>
+    <!-- 2. GAME MAIN SCREEN -->
+    <div id="game-screen" class="w-full max-w-md bg-slate-900/80 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-md overflow-hidden hidden">
+        <div class="bg-slate-800/80 p-4 border-b border-slate-700 flex justify-between items-center">
+            <div>
+                <p class="text-xs text-slate-400">Welcome back,</p>
+                <h2 id="player-name" class="font-bold text-amber-400">Player</h2>
             </div>
-            <div class="bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-950 font-black px-4 py-1.5 rounded-full flex items-center space-x-1 shadow-lg">
-                <span>Rs.</span>
-                <span id="wallet-balance">0</span>
+            <div class="text-right">
+                <p class="text-xs text-slate-400">Total Balance</p>
+                <p class="text-xl font-black text-emerald-400">Rs. <span id="balance">0</span></p>
             </div>
-        </header>
+        </div>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-4 max-w-md mx-auto w-full space-y-6 pb-24">
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="openModal('deposit-modal')" class="bg-green-600 hover:bg-green-700 font-bold py-3 rounded-xl shadow transition">ڈپازٹ (EasyPaisa)</button>
-                <button onclick="openModal('withdraw-modal')" class="bg-red-600 hover:bg-red-700 font-bold py-3 rounded-xl shadow transition">ودڈرا (JazzCash)</button>
+        <div class="p-6 flex flex-col items-center">
+            <div class="w-full bg-slate-950 rounded-2xl p-6 border-2 border-slate-800 mb-6 flex justify-around items-center text-4xl h-28 shadow-inner">
+                <div id="slot1">🍷</div>
+                <div id="slot2">🍇</div>
+                <div id="slot3">🍾</div>
             </div>
 
-            <h2 class="text-xl font-bold text-yellow-400 border-r-4 border-yellow-400 pr-2 text-right">مقبول گیمز</h2>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="openGame('slots')" class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-center cursor-pointer hover:scale-105 transition transform">
-                    <div class="text-4xl mb-2">🎰</div>
-                    <div class="font-bold text-lg">Slots Game</div>
-                    <div class="text-xs text-emerald-400 mt-1">ابھی کھیلیں ➔</div>
+            <div class="w-full mb-6">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 text-center">Select Bet Amount</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button class="bet-btn bg-slate-800 py-2.5 rounded-xl font-bold border border-slate-700 active:bg-amber-500 text-sm" data-amount="20">20</button>
+                    <button class="bet-btn bg-slate-800 py-2.5 rounded-xl font-bold border border-slate-700 active:bg-amber-500 text-sm" data-amount="50">50</button>
+                    <button class="bet-btn bg-slate-800 py-2.5 rounded-xl font-bold border border-slate-700 active:bg-amber-500 text-sm" data-amount="100">100</button>
+                    <button class="bet-btn bg-slate-800 py-2.5 rounded-xl font-bold border border-slate-700 active:bg-amber-500 text-sm" data-amount="200">200</button>
                 </div>
-                <div onclick="openGame('spin')" class="bg-slate-800 p-4 rounded-2xl border border-slate-700 text-center cursor-pointer hover:scale-105 transition transform">
-                    <div class="text-4xl mb-2">🎡</div>
-                    <div class="font-bold text-lg">Lucky Wheel</div>
-                    <div class="text-xs text-emerald-400 mt-1">قسمت آزمائیں ➔</div>
-                </div>
+                <p class="text-xs text-center text-slate-400 mt-3">Selected Bet: <span id="current-bet" class="text-amber-400 font-bold">Rs. 20</span></p>
             </div>
-        </main>
-    </div>
+            <button id="spin-btn" class="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-slate-950 font-black py-4 rounded-xl text-lg tracking-wider active:scale-95 transition-all">SPIN & EARN</button>
+        </div>
 
-    <!-- ADMIN PANEL SCREEN -->
-    <div id="admin-screen" class="hidden min-h-screen p-4">
-        <div class="max-w-md mx-auto bg-slate-900 border border-slate-700 rounded-2xl p-6 space-y-6">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <button onclick="closeAdminPanel()" class="text-sm text-slate-400 hover:text-white">◀ واپس لابی</button>
-                <h2 class="text-2xl font-black text-yellow-400">ہوسٹ / ایڈمن پینل</h2>
-            </div>
-
-            <!-- Host Wallet Settings -->
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-                <h3 class="text-md font-bold text-emerald-400 text-right">اپنا ایزی پیسہ نمبر سیٹ کریں</h3>
-                <input type="text" id="admin-easypaisa-phone" placeholder="ایزی پیسہ موبائل نمبر" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded text-right text-sm">
-                <input type="text" id="admin-easypaisa-name" placeholder="اکاؤنٹ ہولڈر کا نام" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded text-right text-sm">
-                <button onclick="saveAdminSettings()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded text-sm transition">معلومات سیو کریں</button>
-            </div>
-
-            <!-- User Management -->
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-                <h3 class="text-md font-bold text-yellow-400 text-right">صارفین کے کوائنز کنٹرول کریں</h3>
-                <input type="text" id="manage-target-user" placeholder="صارف کا نام (Username)" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded text-right text-sm">
-                <input type="number" id="manage-coins-amount" placeholder="کوائنز کی تعداد (مثال: 500 یا -500)" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded text-right text-sm">
-                <button onclick="adjustUserCoins()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-slate-950 font-bold py-2 rounded text-sm transition">کوائنز اپڈیٹ کریں</button>
-            </div>
+        <div class="grid grid-cols-3 bg-slate-800 border-t border-slate-700 text-center text-xs font-bold">
+            <button id="nav-game" class="py-4 text-amber-400 border-b-2 border-amber-400">Game</button>
+            <button id="nav-deposit" class="py-4 text-slate-400">Deposit</button>
+            <button id="nav-withdraw" class="py-4 text-slate-400">Withdraw</button>
         </div>
     </div>
 
-    <!-- 3. SLOTS GAME SCREEN -->
-    <div id="slots-screen" class="hidden min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 w-full max-w-sm text-center shadow-2xl relative">
-            <button onclick="backToLobby()" class="absolute top-4 left-4 text-sm text-slate-400 hover:text-white">◀ لابی</button>
-            <h2 class="text-2xl font-black text-yellow-400 mb-6">🎰 SLOTS EXTRA</h2>
-            <div class="flex justify-center space-x-4 bg-slate-900 p-6 rounded-xl border-2 border-slate-700 mb-6 text-4xl">
-                <span id="slot1">🍒</span><span id="slot2">🍋</span><span id="slot3">🍉</span>
-            </div>
-            <div class="mb-6">
-                <label class="block text-xs text-slate-400 mb-1">بیٹ کی رقم (روپے)</label>
-                <input type="number" id="slots-bet" value="50" class="w-32 text-center p-2 rounded bg-slate-900 border border-slate-700 font-bold text-yellow-400">
-            </div>
-            <button onclick="playSlots()" class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 font-black p-4 rounded-xl text-lg shadow-lg hover:from-yellow-400 hover:to-amber-400 transition">اسپن کریں (Spin)</button>
-            <p id="slots-result" class="mt-4 font-bold text-lg"></p>
+    <!-- 3. DEPOSIT SCREEN -->
+    <div id="deposit-screen" class="w-full max-w-md bg-slate-900/80 p-6 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-md hidden">
+        <h2 class="text-2xl font-black text-amber-400 mb-4 text-center">EasyPaisa / JazzCash Deposit</h2>
+        <div class="bg-slate-800 p-4 rounded-xl mb-4 text-sm space-y-2 border border-slate-700">
+            <p><span class="text-slate-400">Account Name:</span> <strong class="text-white">JJWINE Admin</strong></p>
+            <p><span class="text-slate-400">Account Number:</span> <strong id="admin-phone-display" class="text-amber-400 text-lg">03001234567</strong></p>
         </div>
+        <form id="deposit-form" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-1">Amount Sent (Rs.)</label>
+                <input type="number" id="dep-amount" required min="100" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3" placeholder="Minimum 100">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-1">TRX ID / Transaction ID</label>
+                <input type="text" id="dep-trx" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3" placeholder="Enter TRX ID">
+            </div>
+            <button type="submit" class="w-full bg-amber-500 text-slate-950 font-black py-3 rounded-xl">SUBMIT DEPOSIT REQUEST</button>
+        </form>
+        <button class="back-to-game w-full text-center text-sm font-bold text-slate-400 mt-4 underline">Back to Game</button>
     </div>
 
-    <!-- 4. LUCKY SPIN SCREEN -->
-    <div id="spin-screen" class="hidden min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 w-full max-w-sm text-center shadow-2xl relative">
-            <button onclick="backToLobby()" class="absolute top-4 left-4 text-sm text-slate-400 hover:text-white">◀ لابی</button>
-            <h2 class="text-2xl font-black text-yellow-400 mb-6">🎡 LUCKY SPIN</h2>
-            <div id="wheel" class="w-48 h-48 rounded-full border-4 border-yellow-400 mx-auto flex items-center justify-center text-3xl bg-slate-900 shadow-inner mb-6 transition-all duration-1000">💰</div>
-            <p class="text-sm text-slate-300 mb-6">فیس: <b>Rs. 20</b> فی اسپن</p>
-            <button onclick="playWheel()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black p-4 rounded-xl text-lg shadow-lg transition">ویل گھمائیں</button>
-            <p id="wheel-result" class="mt-4 font-bold text-lg"></p>
-        </div>
+    <!-- 4. WITHDRAW SCREEN -->
+    <div id="withdraw-screen" class="w-full max-w-md bg-slate-900/80 p-6 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-md hidden">
+        <h2 class="text-2xl font-black text-rose-400 mb-4 text-center">Fast Withdrawal</h2>
+        <form id="withdraw-form" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-1">Select Method</label>
+                <select id="wit-method" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white">
+                    <option value="EasyPaisa">EasyPaisa</option>
+                    <option value="JazzCash">JazzCash</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-1">Account Number</label>
+                <input type="tel" id="wit-number" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3" placeholder="03XXXXXXXXX">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-1">Amount to Withdraw (Rs.)</label>
+                <input type="number" id="wit-amount" required min="500" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3" placeholder="Minimum 500">
+            </div>
+            <button type="submit" class="w-full bg-rose-500 text-white font-black py-3 rounded-xl">REQUEST WITHDRAWAL</button>
+        </form>
+        <button class="back-to-game w-full text-center text-sm font-bold text-slate-400 mt-4 underline">Back to Game</button>
     </div>
 
-    <!-- MODALS (DEPOSIT / WITHDRAW) -->
-    <div id="deposit-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
-        <div class="bg-slate-800 p-6 rounded-xl w-full max-w-xs border border-slate-700 text-right">
-            <h3 class="text-lg font-bold text-green-400 mb-4">رقم ڈپازٹ کریں</h3>
-            <p class="text-xs text-slate-400 mb-3">نیچے دیے گئے ہوسٹ کے ایزی پیسہ نمبر پر رقم بھیج کر ٹرانزیکشن ID لکھیں۔</p>
-            <div class="bg-slate-900 p-3 rounded text-center mb-4 border border-slate-700">
-                <span class="text-xs text-slate-500 block">EasyPaisa اکاؤنٹ نمبر</span>
-                <b id="display-host-phone" class="font-mono text-yellow-400 text-md block">03001234567</b>
+    <!-- 5. HOST / ADMIN CONTROL PANEL SCREEN -->
+    <div id="admin-screen" class="w-full max-w-xl bg-slate-900/90 p-6 rounded-2xl shadow-2xl border-2 border-amber-500 backdrop-blur-md hidden">
+        <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-3">
+            <h2 class="text-2xl font-black text-amber-400">👑 HOST CONTROL PANEL</h2>
+            <button id="admin-logout" class="bg-rose-600 text-xs px-3 py-1.5 rounded-lg font-bold">Logout</button>
+        </div>
+        
+        <!-- EasyPaisa Number Setup -->
+        <div class="mb-6 bg-slate-800 p-4 rounded-xl border border-slate-700">
+            <h3 class="text-sm font-bold text-slate-300 mb-2">Change EasyPaisa/JazzCash Receiving Number</h3>
+            <div class="flex gap-2">
+                <input type="tel" id="new-admin-phone" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white" placeholder="Enter new number">
